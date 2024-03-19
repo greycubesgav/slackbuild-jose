@@ -1,0 +1,2 @@
+# slackbuild_jose
+Slackware 
