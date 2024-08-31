@@ -26,6 +26,9 @@ jobs:
         name: slackbuild-pkgs
         path: pkgs/
 
+    - name: Display structure of downloaded packages
+      run: ls -R pkgs/
+
     - name: Create new release and upload packages
       uses: svenstaro/upload-release-action@v2
       with:
