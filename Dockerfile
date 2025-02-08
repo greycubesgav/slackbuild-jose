@@ -38,5 +38,5 @@ RUN jose alg
 # #ENTRYPOINT [ "bash" ]
 
 # Create a clean image with only the artifact
-#FROM scratch AS artifact
-#COPY --from=builder /tmp/jose*.tgz .
+FROM scratch AS artifact
+COPY --from=builder /tmp/jose*.tgz .
