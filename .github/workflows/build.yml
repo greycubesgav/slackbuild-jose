@@ -12,6 +12,8 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-latest
+    outputs:
+      release_version: ${{ env.RELEASE_VERSION }}
     steps:
       - name: checkout code
         uses: actions/checkout@v4
