@@ -1,4 +1,4 @@
-name: Build Packages
+name: Build All Packages
 
 on:
   workflow_dispatch:
@@ -18,13 +18,17 @@ jobs:
 
       - name: get version
         run: |
-          release_version=$(grep VERSION ./*.info | sed -E 's|VERSION="([0-9.]+)"|\1|')
+          release_version=$(awk -F'"' '/^VERSION=/{print $2}' ./src/jose/*.info)
           echo "Building release version $release_version"
           echo "RELEASE_VERSION=$release_version" >> $GITHUB_ENV
         shell: bash
 
       - name: build
-        run: make docker-build-artifact
+        run: |
+          echo "Building version ${{ env.RELEASE_VERSION }}"
+          make docker-artifact-build-aclemons-${{ env.RELEASE_VERSION }}-current
+          make docker-artifact-build-aclemons-${{ env.RELEASE_VERSION }}-15.0
+        shell: bash
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
