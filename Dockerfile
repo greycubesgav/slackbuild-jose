@@ -3,25 +3,6 @@ FROM ${DOCKER_FULL_BASE_IMAGE_NAME} AS builder
 
 ARG TAG='_SL-CUR_GG' VERSION=14 BUILD=1
 
-# Build JQ - from local repo sources
-# - Required for the *building* of jose
-#RUN wget --no-check-certificate  'https://slackbuilds.org/slackbuilds/15.0/system/jq.tar.gz'
-#RUN wget --no-check-certificate 'https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-1.7.1.tar.gz'
-#COPY src/jq* /root/jq/
-#WORKDIR /root/jq
-#RUN ./jq.SlackBuild
-#RUN installpkg /tmp/jq-*.tgz
-
-## Install the dependancies binaries for the buildhttp://www.slackware.com/~alien/slackbuilds/jq/pkg64/current/
-#WORKDIR /root/jq/
-#RUN wget --no-check-certificate http://www.slackware.com/~alien/slackbuilds/jq/pkg64/15.0/jq-1.6-x86_64-1alien.txz && \
-#wget --no-check-certificate http://www.slackware.com/~alien/slackbuilds/jq/pkg64/15.0/jq-1.6-x86_64-1alien.txz.md5 && \
-#md5sum -c jq-1.6-x86_64-1alien.txz.md5
-#RUN upgradepkg --install-new --reinstall jq-1.6-x86_64-1alien.txz
-
-# Set our prepended build artifact tag
-#ENV TAG='_SL-CUR_GG'
-
 # Copy over the build files
 COPY src/jose/jose-${VERSION}.tar.xz LICENSE src/jose/jose.info src/jose/jose.SlackBuild src/jose/README src/jose/slack-desc /root/build/
 WORKDIR /root/build/
