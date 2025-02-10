@@ -1,7 +1,7 @@
 ARG DOCKER_FULL_BASE_IMAGE_NAME=greycubesgav/slackware-docker-base:aclemons-current
 FROM ${DOCKER_FULL_BASE_IMAGE_NAME} AS builder
 
-ARG TAG='_SL-CUR_GG' VERSION=14
+ARG TAG='_SL-CUR_GG' VERSION=14 BUILD=1
 
 # Build JQ - from local repo sources
 # - Required for the *building* of jose
@@ -28,7 +28,7 @@ WORKDIR /root/build/
 # Update the jose.info file to match the version we're building
 RUN sed -i "s|VERSION=.*|VERSION=\"${VERSION}\"|" jose.info && export MD5SUM=$(md5sum jose-${VERSION}.tar.xz | cut -d ' ' -f 1) && sed -i "s|_MD5SUM_|${MD5SUM}|" jose.info
 # Build the package
-RUN VERSION="$VERSION" TAG="$TAG" ./jose.SlackBuild
+RUN VERSION="$VERSION" TAG="$TAG" BUILD="$BUILD" ./jose.SlackBuild
 RUN installpkg /tmp/jose-${VERSION}*.tgz
 RUN jose alg
 

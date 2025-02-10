@@ -12,20 +12,25 @@ DOCKER_TARGET_TAG=?
 DOCKER_PLATFORM=linux/amd64
 # Add NOCACHE='--no-cache' to force a rebuild
 NOCACHE=
+# Set the build version to the current date
+BUILD=$(shell date +%Y%m%d)
+
+# By default, build package versions and variants
+default: docker-artifact-build-aclemons-12-current docker-artifact-build-aclemons-14-current docker-artifact-build-aclemons-12-15.0 docker-artifact-build-aclemons-14-15.0
 
 # Build the package against slackware-current (libcrypto.so.3) and tag the package appropriately
 docker-image-build-aclemons-12-current:
-	$(MAKE) docker-image-build SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='current'
+	$(MAKE) docker-image-build SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='current' BUILD='$(BUILD)'
 
 docker-image-build-aclemons-14-current:
-	$(MAKE) docker-image-build SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='current'
+	$(MAKE) docker-image-build SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='current' BUILD='$(BUILD)'
 
 # Build the package against slackware-v15 (libcrypto.so.1.1) and tag the package appropriately
 docker-image-build-aclemons-12-15.0:
-	$(MAKE) docker-image-build SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='15.0'
+	$(MAKE) docker-image-build SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='15.0' BUILD='$(BUILD)'
 
 docker-image-build-aclemons-14-15.0:
-	$(MAKE) docker-image-build SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='15.0'
+	$(MAKE) docker-image-build SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='15.0' BUILD='$(BUILD)'
 
 # Build the package using the variables set in the Makefile
 docker-image-build:
@@ -37,6 +42,7 @@ docker-image-build:
 		--build-arg DOCKER_FULL_BASE_IMAGE_NAME="$(DOCKER_FULL_BASE_IMAGE_NAME)" \
 		--build-arg TAG='_$(DOCKER_BASE_IMAGE_VERSION)_GG' \
 		--build-arg VERSION=$(SOURCE_VERSION) \
+		--build-arg BUILD=$(BUILD) \
 		--tag $(DOCKER_FULL_TARGET_IMAGE_NAME) .
 
 #	docker build --platform $(DOCKER_PLATFORM) --file Dockerfile --tag $(DOCKER_USER)/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION) .
@@ -48,16 +54,16 @@ docker-run-image:
 # -------------------------------------------------------------------------------------------------------
 
 docker-artifact-build-aclemons-12-current:
-	$(MAKE) docker-artifact-build SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='current'
+	$(MAKE) docker-artifact-build SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='current' BUILD='$(BUILD)'
 
 docker-artifact-build-aclemons-14-current:
-	$(MAKE) docker-artifact-build SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='current'
+	$(MAKE) docker-artifact-build SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='current' BUILD='$(BUILD)'
 
 docker-artifact-build-aclemons-12-15.0:
-	$(MAKE) docker-artifact-build SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='15.0'
+	$(MAKE) docker-artifact-build SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='15.0' BUILD='$(BUILD)'
 
 docker-artifact-build-aclemons-14-15.0:
-	$(MAKE) docker-artifact-build SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='15.0'
+	$(MAKE) docker-artifact-build SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='15.0' BUILD='$(BUILD)'
 
 docker-artifact-build:
 	$(eval DOCKER_FULL_BASE_IMAGE_NAME=$(DOCKER_USER)/$(DOCKER_BASE_IMAGE_NAME):$(DOCKER_BASE_IMAGE_TAG)-$(DOCKER_BASE_IMAGE_VERSION))
@@ -68,4 +74,13 @@ docker-artifact-build:
 		--build-arg DOCKER_FULL_BASE_IMAGE_NAME="$(DOCKER_FULL_BASE_IMAGE_NAME)" \
 		--build-arg TAG='_$(DOCKER_BASE_IMAGE_VERSION)_GG' \
 		--build-arg VERSION=$(SOURCE_VERSION) \
+		--build-arg BUILD=$(BUILD) \
 		--target artifact --output type=local,dest=./pkgs/ .
+# Create Unraid version copies for simpler installs
+	if ls ./pkgs/*_current_*.t?z 1> /dev/null 2>&1; then \
+		for f in ./pkgs/*_current_*.t?z; do cp "$$f" "$${f/_current_/_unraid-v7.x.x_}"; done \
+	fi
+	if ls ./pkgs/*_15.0_*.t?z 1> /dev/null 2>&1; then \
+		for f in ./pkgs/*_15.0_*.t?z; do cp "$$f" "$${f/_15.0_/_unraid-v6.x.x_}"; done \
+	fi
+
