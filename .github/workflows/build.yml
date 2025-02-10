@@ -4,8 +4,12 @@ on:
   workflow_dispatch:
   workflow_call:
     outputs:
-      jose_version: ${{ jobs.build.outputs.jose_version }}
-      build_version: ${{ jobs.build.outputs.build_version }}
+      jose_version:
+        description: The jose version we're building
+        value: ${{ jobs.build.outputs.jose_version }}
+      build_version:
+        description: The build date
+        value: ${{ jobs.build.outputs.build_version }}
 
 env:
   DOCKER_USER: greycubesgav
