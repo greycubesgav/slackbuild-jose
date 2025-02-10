@@ -40,3 +40,11 @@ jobs:
         with:
           name: slackbuild-pkgs
           path: pkgs/*
+
+      - name: Debug Outputs
+        run: |
+          echo "JOSE_VERSION=${{ env.JOSE_VERSION }}"
+          echo "BUILD_VERSION=${{ env.BUILD_VERSION }}"
+          echo "outputs.jose_version=${{ jobs.build.outputs.jose_version }}"
+          echo "outputs.build_version=${{ jobs.build.outputs.build_version }}"
+        shell: bash

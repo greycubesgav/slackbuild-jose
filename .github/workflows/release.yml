@@ -29,9 +29,15 @@ jobs:
     - name: Display structure of downloaded packages
       run: ls -R pkgs/
 
+    - name: Debug Inputs
+      run: |
+        echo "Received jose_version=${needs.build.outputs.jose_version}"
+        echo "Received build_version=${needs.build.outputs.build_version}"
+      shell: bash
+
     - name: Create Release
       id: create_release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         tag_name: v${{ needs.build.outputs.jose_version }}-${{ needs.build.outputs.build_version }}
         name: Release Jose v${{ needs.build.outputs.jose_version }} - Build ${{ needs.build.outputs.build_version }}
