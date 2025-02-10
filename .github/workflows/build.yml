@@ -45,6 +45,6 @@ jobs:
         run: |
           echo "JOSE_VERSION=${{ env.JOSE_VERSION }}"
           echo "BUILD_VERSION=${{ env.BUILD_VERSION }}"
-          echo "outputs.jose_version=${{ jobs.build.outputs.jose_version }}"
-          echo "outputs.build_version=${{ jobs.build.outputs.build_version }}"
+          echo "outputs.jose_version=${{ steps.get_version.outputs.jose_version }}"
+          echo "outputs.build_version=${{ steps.get_version.outputs.build_version }}"
         shell: bash
