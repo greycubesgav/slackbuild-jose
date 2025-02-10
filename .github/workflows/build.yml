@@ -25,8 +25,8 @@ jobs:
           jose_version=$(awk -F'"' '/^VERSION=/{print $2}' ./src/jose/*.info)
           build_version=$(date +%Y%m%d)
           echo "Building release jose v${jose_version} build ${build_version}"
-          echo "jose_version=${$jose_version}" >> "$GITHUB_OUTPUT"
-          echo "build_version=${$build_version}" >> "$GITHUB_OUTPUT"
+          echo "jose_version=${jose_version}" >> "$GITHUB_OUTPUT"
+          echo "build_version=${build_version}" >> "$GITHUB_OUTPUT"
           echo "JOSE_VERSION=$jose_version" >> $GITHUB_ENV
           echo "BUILD_VERSION=$build_version" >> $GITHUB_ENV
         shell: bash
