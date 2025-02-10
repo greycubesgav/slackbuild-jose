@@ -14,6 +14,8 @@ DOCKER_PLATFORM=linux/amd64
 NOCACHE=
 # Set the build version to the current date
 BUILD=$(shell date +%Y%m%d)
+# Make sure we are running bash, not 'dash' under github actions
+SHELL := /usr/bin/env bash
 
 # By default, build package versions and variants
 default: docker-artifact-build-aclemons-12-current docker-artifact-build-aclemons-14-current docker-artifact-build-aclemons-12-15.0 docker-artifact-build-aclemons-14-15.0
