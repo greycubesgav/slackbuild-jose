@@ -47,9 +47,25 @@ docker-image-build:
 		--build-arg BUILD=$(BUILD) \
 		--tag $(DOCKER_FULL_TARGET_IMAGE_NAME) .
 
+docker-image-run-aclemons-12-current:
+	$(MAKE) docker-image-run SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='current'
+
+docker-image-run-aclemons-14-current:
+	$(MAKE) docker-image-run SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='current'
+
+docker-image-run-aclemons-12-15.0:
+	$(MAKE) docker-image-run SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='15.0'
+
+docker-image-run-aclemons-14-15.0:
+	$(MAKE) docker-image-run SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='15.0'
+
 #	docker build --platform $(DOCKER_PLATFORM) --file Dockerfile --tag $(DOCKER_USER)/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION) .
-docker-run-image:
-	docker run --platform $(DOCKER_PLATFORM) --rm -it $(DOCKER_USER)/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
+docker-image-run:
+	$(eval DOCKER_FULL_BASE_IMAGE_NAME=$(DOCKER_USER)/$(DOCKER_BASE_IMAGE_NAME):$(DOCKER_BASE_IMAGE_TAG)-$(DOCKER_BASE_IMAGE_VERSION))
+	$(eval DOCKER_FULL_TARGET_IMAGE_NAME=$(DOCKER_USER)/$(DOCKER_TARGET_IMAGE_NAME):v$(SOURCE_VERSION)-$(DOCKER_BASE_IMAGE_VERSION))
+	@echo "Running $(DOCKER_FULL_TARGET_IMAGE_NAME)"
+	docker run --platform $(DOCKER_PLATFORM) --rm -it \
+		$(DOCKER_FULL_TARGET_IMAGE_NAME)
 
 # -------------------------------------------------------------------------------------------------------
 #  Package Extraction
