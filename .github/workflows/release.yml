@@ -31,8 +31,8 @@ jobs:
 
     - name: Debug Inputs
       run: |
-        echo "Received jose_version=${needs.build.outputs.jose_version}"
-        echo "Received build_version=${needs.build.outputs.build_version}"
+        echo "Received jose_version=${{ needs.build.outputs.jose_version }}"
+        echo "Received build_version=${{ needs.build.outputs.build_version }}"
       shell: bash
 
     - name: Create Release
