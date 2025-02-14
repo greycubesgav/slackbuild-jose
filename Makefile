@@ -18,20 +18,20 @@ BUILD=$(shell date +%Y%m%d)
 SHELL := /usr/bin/env bash
 
 # By default, build package versions and variants
-default: docker-artifact-build-aclemons-12-current docker-artifact-build-aclemons-14-current docker-artifact-build-aclemons-12-15.0 docker-artifact-build-aclemons-14-15.0
+default: docker-artifact-build-12-current docker-artifact-build-12-15.0
 
 # Build the package against slackware-current (libcrypto.so.3) and tag the package appropriately
-docker-image-build-aclemons-12-current:
+docker-image-build-12-current:
 	$(MAKE) docker-image-build SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='current' BUILD='$(BUILD)'
 
-docker-image-build-aclemons-14-current:
+docker-image-build-14-current:
 	$(MAKE) docker-image-build SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='current' BUILD='$(BUILD)'
 
 # Build the package against slackware-v15 (libcrypto.so.1.1) and tag the package appropriately
-docker-image-build-aclemons-12-15.0:
+docker-image-build-12-15.0:
 	$(MAKE) docker-image-build SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='15.0' BUILD='$(BUILD)'
 
-docker-image-build-aclemons-14-15.0:
+docker-image-build-14-15.0:
 	$(MAKE) docker-image-build SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='15.0' BUILD='$(BUILD)'
 
 # Build the package using the variables set in the Makefile
@@ -47,16 +47,16 @@ docker-image-build:
 		--build-arg BUILD=$(BUILD) \
 		--tag $(DOCKER_FULL_TARGET_IMAGE_NAME) .
 
-docker-image-run-aclemons-12-current:
+docker-image-run-12-current:
 	$(MAKE) docker-image-run SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='current'
 
-docker-image-run-aclemons-14-current:
+docker-image-run-14-current:
 	$(MAKE) docker-image-run SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='current'
 
-docker-image-run-aclemons-12-15.0:
+docker-image-run-12-15.0:
 	$(MAKE) docker-image-run SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='15.0'
 
-docker-image-run-aclemons-14-15.0:
+docker-image-run-14-15.0:
 	$(MAKE) docker-image-run SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='15.0'
 
 #	docker build --platform $(DOCKER_PLATFORM) --file Dockerfile --tag $(DOCKER_USER)/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION) .
@@ -71,16 +71,16 @@ docker-image-run:
 #  Package Extraction
 # -------------------------------------------------------------------------------------------------------
 
-docker-artifact-build-aclemons-12-current:
+docker-artifact-build-12-current:
 	$(MAKE) docker-artifact-build SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='current' BUILD='$(BUILD)'
 
-docker-artifact-build-aclemons-14-current:
+docker-artifact-build-14-current:
 	$(MAKE) docker-artifact-build SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='current' BUILD='$(BUILD)'
 
-docker-artifact-build-aclemons-12-15.0:
+docker-artifact-build-12-15.0:
 	$(MAKE) docker-artifact-build SOURCE_VERSION=12 DOCKER_BASE_IMAGE_VERSION='15.0' BUILD='$(BUILD)'
 
-docker-artifact-build-aclemons-14-15.0:
+docker-artifact-build-14-15.0:
 	$(MAKE) docker-artifact-build SOURCE_VERSION=14 DOCKER_BASE_IMAGE_VERSION='15.0' BUILD='$(BUILD)'
 
 docker-artifact-build:

@@ -128,9 +128,14 @@ cat "$CWD/$PRGNAM.SlackBuild" > "$PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuil
 
 # Copy the slack-desc (and a custom doinst.sh if necessary) into ./install
 mkdir -p "$PKG/install"
-cat "$CWD/slack-desc" > "$PKG/install/slack-desc"
+if [ -e "$CWD/slack-desc" ]; then
+  cat "$CWD/slack-desc" > "$PKG/install/slack-desc"
+fi
+if [ -e "$CWD/doinst.sh" ]; then
+  cat "$CWD/doinst.sh" > "$PKG/install/doinst.sh"
+fi
 #cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 # Make the package; be sure to leave it in $OUTPUT
 cd "$PKG"
-/sbin/makepkg -l y -c n "$OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.$PKGTYPE"
+/sbin/makepkg -l n -c n "$OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.$PKGTYPE"
